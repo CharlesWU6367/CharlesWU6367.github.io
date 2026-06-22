@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在前往活動官網...</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        /* 讓畫面只有一個簡單優雅的提示，隱藏所有不必要的元素 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h2>正在為您載入專屬活動頁面...</h2>
+    </div>
+
+    <script>
+        // 1. 保留你原本綁定好的 LIFF ID
+        const MY_LIFF_ID = '2010380421-JEdqtu0E'; 
+        
+        // 2. 設定你要跳轉的 活動網址
+        const TARGET_URL = 'https://charleswu6367.github.io/Test1.html';
+
+        async function autoBridge() {
+            try {
+                // 1. 初始化 LIFF
+                await liff.init({ liffId: MY_LIFF_ID });
+
+                // 2. 強制登入
+                if (!liff.isLoggedIn()) {
+                    liff.login(); 
+                    return; 
+                }
+
+                // 3. 取得 LINE 個人資料
+                const profile = await liff.getProfile();
+                const uid = profile.userId;       // 拿到 Uxxxxxxxxxx...
+                const name = profile.displayName; // 拿到 LINE 名字
+
+                // 4. 【大師級核心：明碼拼接】
+                // 將 UID 和名字用 GET 參數（?）的方式拼接到網址屁股後面
+                // encodeURIComponent 確保中文名字或特殊字元不會讓網址壞掉
+                const finalUrl = `${TARGET_URL}?UID=${encodeURIComponent(uid)}&user_name=${encodeURIComponent(name)}`;
+
+                // 5. 瞬間執行網址跳轉（預設就是 GET 請求，完美相容 Workers）
+                window.location.href = finalUrl;
+
+            } catch (error) {
+                console.error("中轉失敗:", error);
+                alert("系統引導失敗，請重新從 LINE 點擊連結。");
+            }
+        }
+
+        // 網頁載入立刻執行
+        window.onload = autoBridge;
+    </script>
+</body>
+</html>
