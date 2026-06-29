@@ -1,5 +1,5 @@
 // ==================== 設定區 ====================
-const N8N_WEBHOOK_URL = 'https://protected-radiation-robot-arbitrary.trycloudflare.com/webhook/event1'; 
+const N8N_WEBHOOK_URL = 'https://customized-university-rational-jul.trycloudflare.com/webhook/event1'; 
 
 // 取得event ID
 const currentScript = document.currentScript;
